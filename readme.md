@@ -239,6 +239,122 @@ All errors follow a consistent structure:
 ```
 python -m unittest discover tests
 ```
+---
+## cURL Examples
+
+You can test all endpoints directly from terminal using cURL.
+
+---
+
+### Create Project
+
+```bash
+curl -X POST http://localhost:5000/api/projects \
+-H "Content-Type: application/json" \
+-d '{"name":"Website Redesign","description":"UI revamp"}'
+```
+
+---
+
+### List Projects
+
+```bash
+curl http://localhost:5000/api/projects
+```
+
+---
+
+### Get Project by ID
+
+```bash
+curl http://localhost:5000/api/projects/1
+```
+
+---
+
+### Update Project
+
+```bash
+curl -X PUT http://localhost:5000/api/projects/1 \
+-H "Content-Type: application/json" \
+-d '{"status":"archived"}'
+```
+
+---
+
+### Delete Project
+
+```bash
+curl -X DELETE http://localhost:5000/api/projects/1
+```
+
+---
+
+### Create Task
+
+```bash
+curl -X POST http://localhost:5000/api/projects/1/tasks \
+-H "Content-Type: application/json" \
+-d '{"title":"Design homepage","priority":"high"}'
+```
+
+---
+
+### List Tasks for Project
+
+```bash
+curl http://localhost:5000/api/projects/1/tasks
+```
+
+---
+
+### Filter Tasks
+
+```bash
+curl "http://localhost:5000/api/projects/1/tasks?status=todo&priority=high"
+```
+
+---
+
+### Get Single Task
+
+```bash
+curl http://localhost:5000/api/tasks/<task_id>
+```
+
+---
+
+### Update Task
+
+```bash
+curl -X PUT http://localhost:5000/api/tasks/<task_id> \
+-H "Content-Type: application/json" \
+-d '{"status":"done"}'
+```
+
+---
+
+### Delete Task
+
+```bash
+curl -X DELETE http://localhost:5000/api/tasks/<task_id>
+```
+
+---
+
+### Project Summary
+
+```bash
+curl http://localhost:5000/api/projects/1/summary
+```
+
+---
+
+## Notes
+
+* Replace `<task_id>` with actual task UUID.
+* Ensure DynamoDB Local is running before testing task endpoints.
+* Server must be running at `localhost:5000`.
 
 ---
 
