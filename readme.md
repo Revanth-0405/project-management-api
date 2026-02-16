@@ -240,6 +240,7 @@ All errors follow a consistent structure:
 python -m unittest discover tests
 ```
 ---
+
 ## cURL Examples
 
 You can test all endpoints directly from terminal using cURL.
