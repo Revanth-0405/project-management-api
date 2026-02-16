@@ -1,5 +1,59 @@
-venv/
+# Python
 __pycache__/
-*.pyc
-projects.db
-shared-local-instance.db
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Virtual Environment
+venv/
+env/
+ENV/
+.venv/
+
+# Environment variables
+.env
+.env.*
+
+# Flask
+instance/
+.webassets-cache
+
+# Database
+*.db
+*.sqlite3
+
+# Logs
+*.log
+logs/
+
+# Testing / coverage
+.coverage
+.pytest_cache/
+htmlcov/
+.tox/
+.nox/
+
+# IDE / Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS Files
+.DS_Store
+Thumbs.db
+
+# Docker
+docker-compose.override.yml
+
+# Build artifacts
+build/
+dist/
+*.egg-info/
+
+# Temporary files
+*.tmp
+*.bak
+*.old

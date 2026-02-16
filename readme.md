@@ -1,147 +1,71 @@
-#  Project Management API
+# Project Management API
 
-A production-quality RESTful API built using **Flask**, demonstrating clean endpoint design, SQL + NoSQL integration, validation, and structured architecture.
+A production-ready REST API for managing projects and tasks using a dual-database architecture:
 
-This project satisfies the assessment requirements for:
+* **SQL (SQLite)** → Projects
+* **NoSQL (DynamoDB Local)** → Tasks
 
-* Clean RESTful API design
-* SQL database integration
-* NoSQL database integration
-* Proper error handling
-* Production-ready code structure
+This project demonstrates clean architecture, REST best practices, scalable database design, validation, logging, testing, and containerization.
 
 ---
 
-#  Tech Stack
+## Architecture Overview
 
-### Framework
+Layered backend architecture:
 
-* Flask
+```
+Routes → Services → Database
+```
 
-### Databases
+**Design principles used**
 
-* **SQLite** → Projects (Relational Database)
-* **DynamoDB Local** → Tasks (Document-Based NoSQL Database)
-
-### Libraries
-
-* Flask
-* Flask-SQLAlchemy
-* boto3
+* Separation of concerns
+* Reusable utilities
+* Structured error handling
+* Scalable query design
+* Clean imports via packages
 
 ---
 
-#  Architecture
+## Tech Stack
 
-```
-Client
-   ↓
-Routes (HTTP Layer)
-   ↓
-Services (Business Logic)
-   ↓
-Databases
-   ├── SQLite (Projects)
-   └── DynamoDB Local (Tasks)
-```
+| Layer            | Technology       |
+| ---------------- | ---------------- |
+| Backend          | Python + Flask   |
+| ORM              | Flask-SQLAlchemy |
+| Relational DB    | SQLite           |
+| NoSQL DB         | DynamoDB Local   |
+| Testing          | unittest         |
+| Containerization | Docker           |
 
-### Folder Structure
+---
+
+## Folder Structure
 
 ```
 project-management-api/
+│
+├── models/
+├── routes/
+├── services/
+├── utils/
+├── tests/
+│
 │
 ├── app.py
 ├── database.py
 ├── create_table.py
 ├── requirements.txt
+├── Dockerfile
 ├── logging_config.py
-│
-├── models/
-├── services/
-├── routes/
-├── utils/
-├── tests/
-│
-└── Dockerfile
+└── README.md
 ```
 
 ---
 
-#  Design Decisions
+## Setup Instructions
 
-### 1️ Dual Database Architecture
-
-Projects are stored in SQLite because project data is structured and relational.
-
-Tasks are stored in DynamoDB Local because task data is flexible and benefits from document-based storage.
-
----
-
-### 2️ UUID for Task IDs
-
-Tasks use UUID instead of incremental integers to ensure global uniqueness and prevent collisions.
-
----
-
-### 3️ Layered Architecture
-
-Separation of concerns:
-
-* Routes → HTTP handling
-* Services → Business logic
-* Models → Schema definition
-* Utils → Reusable helpers
-
----
-
-### 4️ Pagination & Filtering
-
-Implemented `page` and `per_page` to prevent large dataset overload and improve scalability.
-
----
-
-### 5️ Error Handling Strategy
-
-Consistent JSON error responses:
-
-```json
-{
-  "error": "Error message"
-}
-```
-
-Supported status codes:
-
-* 200 OK
-* 201 Created
-* 400 Bad Request
-* 404 Not Found
-* 409 Conflict
-* 500 Internal Server Error
-
----
-
-#  Setup Instructions
-
-## 1️ Clone Repository
-
-```
-git clone https://github.com/yourusername/project-management-api.git
-cd project-management-api
-```
-
----
-
-## 2️ Create Virtual Environment
-
-```
-python -m venv venv
-venv\Scripts\activate
-```
-
----
-
-## 3️ Install Dependencies
+### 1 — Install Dependencies
 
 ```
 pip install -r requirements.txt
@@ -149,21 +73,17 @@ pip install -r requirements.txt
 
 ---
 
-## 4️ Start DynamoDB Local
+### 2 — Start DynamoDB Local
 
-Download DynamoDB Local from AWS documentation.
-
-Inside DynamoDB folder:
+Run DynamoDB Local separately:
 
 ```
-java -Djava.library.path=./DynamoDBLocal_lib -jar DynamoDBLocal.jar -sharedDb
+java -jar DynamoDBLocal.jar -sharedDb
 ```
-
-Keep this running.
 
 ---
 
-## 5️ Create Tasks Table
+### 3 — Create Tasks Table
 
 ```
 python create_table.py
@@ -171,166 +91,29 @@ python create_table.py
 
 ---
 
-## 6️ Start Flask Server
+### 4 — Run API
 
 ```
 python app.py
 ```
 
-Server runs at:
+Server starts at:
 
 ```
-http://127.0.0.1:5000
-```
-
----
-
-#  API Endpoints
-
----
-
-##  Projects
-
-### Create Project
-
-```
-POST /api/projects
-```
-
-### List Projects
-
-```
-GET /api/projects?page=1&per_page=5
-```
-
-### Get Project
-
-```
-GET /api/projects/{id}
-```
-
-### Update Project
-
-```
-PUT /api/projects/{id}
-```
-
-### Delete Project
-
-```
-DELETE /api/projects/{id}
+http://localhost:5000
 ```
 
 ---
 
-##  Tasks
+## Docker Run (Optional)
 
-### Create Task
-
-```
-POST /api/projects/{id}/tasks
-```
-
-### List Tasks
-
-```
-GET /api/projects/{id}/tasks
-```
-
-Supports filtering:
-
-```
-?status=todo
-?priority=high
-```
-
-### Get Task
-
-```
-GET /api/tasks/{task_id}
-```
-
-### Update Task
-
-```
-PUT /api/tasks/{task_id}
-```
-
-### Delete Task
-
-```
-DELETE /api/tasks/{task_id}
-```
-
----
-
-#  curl Examples
-
----
-
-## Create Project
-
-```
-curl -X POST http://127.0.0.1:5000/api/projects \
--H "Content-Type: application/json" \
--d "{\"name\":\"Website Redesign\",\"description\":\"Revamp UI\"}"
-```
-
----
-
-## Get Projects
-
-```
-curl http://127.0.0.1:5000/api/projects
-```
-
----
-
-## Create Task
-
-```
-curl -X POST http://127.0.0.1:5000/api/projects/1/tasks \
--H "Content-Type: application/json" \
--d "{\"title\":\"Design homepage\",\"priority\":\"high\"}"
-```
-
----
-
-## List Tasks
-
-```
-curl http://127.0.0.1:5000/api/projects/1/tasks
-```
-
----
-
-## Update Task
-
-```
-curl -X PUT http://127.0.0.1:5000/api/tasks/<task_id> \
--H "Content-Type: application/json" \
--d "{\"status\":\"done\"}"
-```
-
----
-
-## Delete Task
-
-```
-curl -X DELETE http://127.0.0.1:5000/api/tasks/<task_id>
-```
-
----
-
-#  Docker (Optional)
-
-Build:
+Build image:
 
 ```
 docker build -t project-api .
 ```
 
-Run:
+Run container:
 
 ```
 docker run -p 5000:5000 project-api
@@ -338,30 +121,155 @@ docker run -p 5000:5000 project-api
 
 ---
 
-#  Run Tests
+## API Endpoints
+
+---
+
+### Projects
+
+| Method | Endpoint                     | Description        |
+| ------ | ---------------------------- | ------------------ |
+| POST   | `/api/projects`              | Create project     |
+| GET    | `/api/projects`              | List projects      |
+| GET    | `/api/projects/<id>`         | Get project        |
+| PUT    | `/api/projects/<id>`         | Update project     |
+| DELETE | `/api/projects/<id>`         | Delete project     |
+| GET    | `/api/projects/<id>/summary` | Project statistics |
+
+---
+
+### Tasks
+
+| Method | Endpoint                   | Description |
+| ------ | -------------------------- | ----------- |
+| POST   | `/api/projects/<id>/tasks` | Create task |
+| GET    | `/api/projects/<id>/tasks` | List tasks  |
+| GET    | `/api/tasks/<task_id>`     | Get task    |
+| PUT    | `/api/tasks/<task_id>`     | Update task |
+| DELETE | `/api/tasks/<task_id>`     | Delete task |
+
+---
+
+## Example Requests
+
+### Create Project
 
 ```
-python -m unittest
+POST /api/projects
+{
+  "name": "Website Redesign",
+  "description": "Revamp UI"
+}
 ```
 
 ---
 
-#  Final Notes
+### Create Task
 
-* Ensure DynamoDB Local is running before starting Flask.
-* SQLite database file (`projects.db`) is auto-generated.
-* No authentication implemented (not required by assessment).
-* Follows REST best practices and production-quality structure.
+```
+POST /api/projects/1/tasks
+{
+  "title": "Design Homepage",
+  "priority": "high"
+}
+```
+
+---
+
+### Summary Response
+
+```
+GET /api/projects/1/summary
+```
+
+```
+{
+ "project_id":1,
+ "project_name":"Website Redesign",
+ "total_tasks":5,
+ "by_status":{"todo":2,"done":1},
+ "by_priority":{"high":2,"medium":2,"low":1}
+}
+```
 
 ---
 
-#  Assessment Compliance
+## Query Parameters
 
-✔ RESTful Design
-✔ SQL Integration
-✔ NoSQL Integration
-✔ Error Handling
-✔ Pagination & Filtering
-✔ Production-Quality Structure
+Projects list:
+
+```
+?page=1
+&per_page=5
+&status=active
+```
+
+Tasks list:
+
+```
+?status=todo
+?priority=high
+```
 
 ---
+
+## Validation Rules
+
+* Project name must be unique
+* Priority must be: low / medium / high
+* Status must be: todo / in_progress / done
+* All requests must be JSON
+
+---
+
+## Error Format
+
+All errors follow a consistent structure:
+
+```
+{
+  "error": "message"
+}
+```
+
+---
+
+## Running Tests
+
+```
+python -m unittest discover tests
+```
+
+---
+
+## Design Decisions
+
+Why SQLite + DynamoDB?
+
+| Choice           | Reason                      |
+| ---------------- | --------------------------- |
+| SQL for Projects | relational integrity        |
+| NoSQL for Tasks  | scalable flexible task data |
+| Query over Scan  | performance optimized       |
+| Service Layer    | business logic isolation    |
+| Blueprints       | modular routing             |
+
+---
+
+## Production-Level Practices Implemented
+
+* Structured logging
+* Input validation
+* Pagination support
+* Filtering support
+* Global error handler
+* Clean package exports
+* Environment-safe timestamps
+* Docker support
+* Unit tests
+
+---
+
+## Performance Considerations
+
+Tasks are queried using DynamoDB partition keys instead of full table scans, ensuring scalable performance as data grows.

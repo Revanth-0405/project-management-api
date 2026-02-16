@@ -10,9 +10,15 @@ dynamodb = boto3.resource(
 
 table = dynamodb.create_table(
     TableName="Tasks",
-    KeySchema=[{"AttributeName": "task_id", "KeyType": "HASH"}],
-    AttributeDefinitions=[{"AttributeName": "task_id", "AttributeType": "S"}],
+    KeySchema=[
+        {"AttributeName": "project_id", "KeyType": "HASH"},
+        {"AttributeName": "task_id", "KeyType": "RANGE"}
+    ],
+    AttributeDefinitions=[
+        {"AttributeName": "project_id", "AttributeType": "N"},
+        {"AttributeName": "task_id", "AttributeType": "S"}
+    ],
     BillingMode="PAY_PER_REQUEST"
 )
 
-print("Tasks Table Created")
+print("Tasks table created")

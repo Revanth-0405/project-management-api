@@ -1,0 +1,27 @@
+{
+ "info": { "name": "Project API", "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json" },
+ "item": [
+  {
+   "name": "Create Project",
+   "request": {
+    "method": "POST",
+    "header": [{"key":"Content-Type","value":"application/json"}],
+    "url": { "raw": "http://localhost:5000/api/projects" },
+    "body": { "mode":"raw","raw":"{\"name\":\"Demo\"}" }
+   }
+  },
+  {
+   "name": "List Projects",
+   "request": { "method": "GET", "url": { "raw": "http://localhost:5000/api/projects" } }
+  },
+  {
+   "name": "Create Task",
+   "request": {
+    "method": "POST",
+    "header":[{"key":"Content-Type","value":"application/json"}],
+    "url": { "raw": "http://localhost:5000/api/projects/1/tasks" },
+    "body": { "mode":"raw","raw":"{\"title\":\"Task\",\"priority\":\"high\"}" }
+   }
+  }
+ ]
+}
